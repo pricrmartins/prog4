@@ -71,6 +71,7 @@ public class Calculadora extends HttpServlet {
         
 		
 		/*
+		 * delete ou destroy
 		HttpSession session = request.getSession();
 		String historico = "";
 		ArrayList<String> lista = null;
