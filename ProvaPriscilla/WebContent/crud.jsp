@@ -11,7 +11,7 @@
 <body>
 <form get="post" action="crudServlet">
 Session
-<textarea rows="<%=session.getAttribute("linhas")%>" cols="40">
+<textarea rows="<%=request.getAttribute("usuarios")%>" cols="40">
 <%=session.getAttribute("usuariosSession") %></textarea>
 <br>
 <br>

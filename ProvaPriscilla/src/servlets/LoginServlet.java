@@ -18,13 +18,13 @@ import gerenciadores.GerenciadorDeCookies;
  */
 @WebServlet(urlPatterns = "loginServlet", initParams = { @WebInitParam(name = "user", value = "admin"),
 		@WebInitParam(name = "senha", value = "admin123") })
-public class loginServlet extends HttpServlet {
+public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public loginServlet() {
+    public LoginServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -36,7 +36,7 @@ public class loginServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		/* Cookies*/
 		GerenciadorDeCookies gen = new GerenciadorDeCookies(request, response);
-		ArrayList<String> cookies = gen.listarCookies();
+		ArrayList<String> cookies = gen.listarUsuario();
 		request.setAttribute("usuarios", cookies);
 		if (cookies.size() == 0) {
 			ServletConfig config = getServletConfig();

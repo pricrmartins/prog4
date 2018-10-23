@@ -8,7 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import beans.UsuarioBean;
 
-public class GerenciadorDeCookies {
+public class GerenciadorDeCookies implements Gerenciador{
+	@SuppressWarnings("unused")
 	private HttpServletRequest request = null;
 	private HttpServletResponse response = null;
 	private Cookie[] listaCookies;
@@ -58,7 +59,7 @@ public class GerenciadorDeCookies {
 			this.response.addCookie(c);
 		}
 	}
-	public ArrayList<String> listarCookies() {
+	public ArrayList<String> listarUsuario() {
 		ArrayList<String> lista = new ArrayList<String>();
 		for (Cookie c : this.listaCookies) {
 			if (!c.getName().equals("JSESSIONID")) {

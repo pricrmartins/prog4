@@ -11,19 +11,21 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import beans.UsuarioBean;
+import gerenciadores.Gerenciador;
 import gerenciadores.GerenciadorDeCookies;
+import gerenciadores.GerenciadorDeSession;
 
 /**
  * Servlet implementation class crudServlet
  */
 @WebServlet("/crudServlet")
-public class crudServlet extends HttpServlet {
+public class CrudServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public crudServlet() {
+	public CrudServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -36,34 +38,29 @@ public class crudServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
+		GerenciadorDeSession genSession = new GerenciadorDeSession(request.getSession());
+		
 		GerenciadorDeCookies gen = new GerenciadorDeCookies(request, response);
-		HttpSession session = request.getSession();
-		ArrayList<String> usuariosSession = new ArrayList<String>();
-		if (session.getAttribute("usuariosSession") != null) {
-			usuariosSession = (ArrayList<String>)session.getAttribute("usuariosSession");
-		}
-		
-		
-		ArrayList<String> usuarios = gen.listarCookies();
+		int qtdadeLinhas = genSession.listarUsuario() != null? genSession.listarUsuario().size()+1 : 6;
+		ArrayList<String> usuarios = gen.listarUsuario();
 		switch (request.getParameter("operacao")) {
 		case "cadastroUsuario":
-			usuariosSession.add(request.getParameter("nome")+".."+request.getParameter("user")+".."+request.getParameter("senha"));
+			genSession.adicionarUsuario(new UsuarioBean(request.getParameter("nome"),request.getParameter("user"),request.getParameter("senha")));
 			gen.adicionarUsuario(new UsuarioBean(request.getParameter("nome"), request.getParameter("user"), request.getParameter("senha")));
 			break;
 		case "remocaoUsuario":
-			usuariosSession.remove(request.getParameter("nome")+".."+request.getParameter("user")+".."+request.getParameter("senha"));
+			genSession.removerUsuario(new UsuarioBean(request.getParameter("nome"), request.getParameter("user"), request.getParameter("senha")));
 			gen.removerUsuario(new UsuarioBean(request.getParameter("nome"),request.getParameter("user"), request.getParameter("senha")));
 			break;
 		case "atualizarUsuario":
-			usuariosSession = atualizarSession(request.getParameter("nome"),request.getParameter("user"),request.getParameter("senha"),usuariosSession);
+			genSession.atualizarUsuario(new UsuarioBean(request.getParameter("nome"), request.getParameter("user"), request.getParameter("senha")));
 			gen.atualizarUsuario(new UsuarioBean(request.getParameter("nome"),request.getParameter("user"), request.getParameter("senha")));
 			break;
 		default:
 			break;
 		}
 		request.setAttribute("usuarios", usuarios);
-		session.setAttribute("usuariosSession", usuariosSession);
-		session.setAttribute("linhas",usuariosSession.size()+1);
+		request.setAttribute("linhas",qtdadeLinhas);
 		request.getRequestDispatcher("crud.jsp").forward(request, response);
 	}
 
